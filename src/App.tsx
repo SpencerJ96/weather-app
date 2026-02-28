@@ -1,8 +1,10 @@
+import Header from './components/Header'
+
 function App() {
   return (
-    <h1 className="text-3xl font-bold text-blue-500">
-      Tailwind is working!
-    </h1>
+	<div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-600 pt-8">
+    <Header />
+	</div>
   )
 }
 
