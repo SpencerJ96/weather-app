@@ -1,5 +1,6 @@
 import Header from './components/Header'
 import SearchBar from './components/SearchBar'
+import WeatherCard from './components/WeatherCard'
 import { useState } from 'react'
 import { useEffect } from 'react'
 
@@ -8,6 +9,7 @@ function App() {
 	const [searchedCity, setSearchedCity] = useState('')
 	const [weatherData, setWeatherData] = useState(null)
 
+	//React Hook. 
 	useEffect(() => {
 		async function fetchWeather(){ if (!searchedCity) return
 			
@@ -17,6 +19,7 @@ function App() {
 		}
 		fetchWeather()
 	}, [searchedCity])
+       //Listen For Changes To This State, When it Happens RUN THIS CODE^^^ 
 
 	return (
 	<div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-600 pt-8">
@@ -25,8 +28,21 @@ function App() {
 	running in searchBar.ts 
 	 which stores the input into searchedCity apps state */}
 	<SearchBar onSearch={setSearchedCity} />
+	{ /* Conditional rendering.
+	 If the Left side is true, do it. If weatherData exists, make weather card */ }
+	{weatherData && <WeatherCard data = {weatherData} />}
 	</div>
   )
 }
+
+{/*User searches "London"
+→ SearchBar calls onSearch("London")
+→ App's searchedCity updates to "London"
+→ useEffect detects the change, runs fetchWeather
+→ fetchWeather calls the API, gets response
+→ response stored in local variable `data`
+→ setWeatherData(data) saves it to React state as `weatherData`
+→ App passes `weatherData` to WeatherCard as a prop called `data`
+→ WeatherCard displays `data.name` on screen */}
 
 export default App
