@@ -1,4 +1,7 @@
-function WeatherCard ({ data }) {
+// Data the prop we're destructuring
+								//type annotation (tell JSX The shape). main is an object with properties inside
+								//Therefore you have to describe that inner object, the same with weather
+function WeatherCard ({ data } : { data:  { name: string, main: { temp: number}, weather: {description: string} [] } }) {
 	return (
 		<div className="items-center shadow-xl px-6 py-8 gap-4 flex flex-col justify-center bg-gray-800 max-w-xs mx-auto rounded-xl">
 			<h2 className="px-4 py-2 text-center font-semibold text-lg tracking-wider bg-sky-500 text-white rounded-full">{data.name}</h2>

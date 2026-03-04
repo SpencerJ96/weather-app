@@ -8,6 +8,7 @@ function App() {
 	{/*State declarations */}
 	const [searchedCity, setSearchedCity] = useState('')
 	const [weatherData, setWeatherData] = useState(null)
+	const [errorMessage, setErrorMessage] = useState ('')
 
 	//React Hook. 
 	useEffect(() => {
@@ -15,11 +16,17 @@ function App() {
 			
 			const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${searchedCity}&appid=${import.meta.env.VITE_WEATHER_API_KEY}&units=metric`)
 			const data = await response.json()
+			
+			if (data.cod === "404") {
+				setErrorMessage ("Please Enter A Valid City")
+				return
+			}
+			setErrorMessage('')
 			setWeatherData(data)
 		}
 		fetchWeather()
 	}, [searchedCity])
-       //Listen For Changes To This State, When it Happens RUN THIS CODE^^^ 
+       //Listen For Changes To This State, When it Happens RUN THIS CODE. Dependency Array^^^ 
 
 	return (
 	<div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-600 pt-8">
@@ -31,6 +38,7 @@ function App() {
 	{ /* Conditional rendering.
 	 If the Left side is true, do it. If weatherData exists, make weather card */ }
 	{weatherData && <WeatherCard data = {weatherData} />}
+	{errorMessage && <p className="font-bold text-red-500 text-center px-2 py-2">{errorMessage}</p>}
 	</div>
   )
 }
