@@ -1,8 +1,11 @@
 import Header from './components/Header'
 import SearchBar from './components/SearchBar'
 import WeatherCard from './components/WeatherCard'
+import ForecastCard, { type ForecastEntry } from './components/ForecastCard'
+					//"TYPE" tells ts this import is only used for type checking not at runtime
 import { useState } from 'react'
 import { useEffect } from 'react'
+
 
 function App() {
 	{/*State declarations */}
@@ -10,7 +13,7 @@ function App() {
 	const [weatherData, setWeatherData] = useState(null)
 	const [errorMessage, setErrorMessage] = useState ('')
 	const [isLoading, setIsLoading] = useState (false)
-
+	const [forecastData, setForecastData] = useState <ForecastEntry[]>([])
 	//React Hook. 
 	useEffect(() => {
 		async function fetchWeather(){ if (!searchedCity) return
@@ -26,26 +29,52 @@ function App() {
 			}
 			setErrorMessage('')
 			setWeatherData(data)
+
+			const forecastResponse = await fetch (` https://api.openweathermap.org/data/2.5/forecast?q=${searchedCity}&appid=${import.meta.env.VITE_WEATHER_API_KEY}&units=metric`)
+			const forecastData = await forecastResponse.json()
+			setForecastData(forecastData.list)
+
 		}
 		fetchWeather()
 	}, [searchedCity])
        //Listen For Changes To This State, When it Happens RUN THIS CODE. Dependency Array^^^ 
 	
+
+
+
 	   //JSX Expressions
 	return (
 	<div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-600 pt-8">
+		
     <Header />
-	{/* {city/userinput} from SearchBar.ts passed into {setSearchedCity} from the onSearch function
+
+	{/* {userinput} from SearchBar.ts passed into {setSearchedCity} from the onSearch function
 	running in searchBar.ts 
 	 which stores the input into searchedCity apps state */}
 	<SearchBar onSearch={setSearchedCity} />
+
 	{isLoading && <p className="text-sky-300 text-center px-2 py-2">Loading...</p>}
 	{ /* Conditional rendering.
 	 If the Left side is true, do it. If weatherData exists, make weather card */ }
+
 	{weatherData && <WeatherCard data = {weatherData} />}
 	{ /* Conditional rendering.
 	 If the Left side is true, do it. If errorMessage exists, make error text display*/ }
+
+	{/* Create expression with the app states forecastData
+		Apply a filter (call every ittem entry while we work with it
+		Only include entrys that includes "12:00:00") 
+		.map loops through every filtered entry and creates a forecastcard comp
+		pass in every entry to this function as a prop called forecast*/}
+	{forecastData
+		.filter((entry) => entry.dt_txt.includes("12:00:00"))
+		.map((entry) => (
+			<ForecastCard forecast={entry} />
+		))}
+
+
 	{errorMessage && <p className="font-bold text-red-500 text-center px-2 py-2">{errorMessage}</p>}
+
 	</div>
   )
 }
