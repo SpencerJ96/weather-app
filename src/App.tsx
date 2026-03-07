@@ -54,6 +54,7 @@ function App() {
 	<SearchBar onSearch={setSearchedCity} />
 
 	{isLoading && <p className="text-sky-300 text-center px-2 py-2">Loading...</p>}
+
 	{ /* Conditional rendering.
 	 If the Left side is true, do it. If weatherData exists, make weather card */ }
 
@@ -62,16 +63,17 @@ function App() {
 	 If the Left side is true, do it. If errorMessage exists, make error text display*/ }
 
 	{/* Create expression with the app states forecastData
-		Apply a filter (call every ittem entry while we work with it
+		Apply a filter (call every item entry while we work with it
 		Only include entrys that includes "12:00:00") 
 		.map loops through every filtered entry and creates a forecastcard comp
 		pass in every entry to this function as a prop called forecast*/}
+	<div className="flex justify-center gap-4 flex-wrap mt-10">
 	{forecastData
 		.filter((entry) => entry.dt_txt.includes("12:00:00"))
 		.map((entry) => (
-			<ForecastCard forecast={entry} />
+			<ForecastCard key={entry.dt_txt} forecast={entry} />
 		))}
-
+	</div>
 
 	{errorMessage && <p className="font-bold text-red-500 text-center px-2 py-2">{errorMessage}</p>}
 
