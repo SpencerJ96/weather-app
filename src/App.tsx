@@ -14,6 +14,7 @@ function App() {
 	const [errorMessage, setErrorMessage] = useState ('')
 	const [isLoading, setIsLoading] = useState (false)
 	const [forecastData, setForecastData] = useState <ForecastEntry[]>([])
+	const [isCelsius, setIsCelsius] = useState(true)
 	//React Hook. 
 	useEffect(() => {
 		async function fetchWeather(){ if (!searchedCity) return
@@ -52,13 +53,26 @@ function App() {
 	running in searchBar.ts 
 	 which stores the input into searchedCity apps state */}
 	<SearchBar onSearch={setSearchedCity} />
+	
+	{/* Convertion Button
+		On click run this function "=>" Inside the Expression {}
+		  run the state updater function setIsCelsius and flip the boolean value(Logical NOT operator"!").
+		  *Ternary Operation* 
+		  If isCelsius current state is TRUE [Celsius is displayed] Display "switch to F".
+		  Else, [isCelsius state is FALSE] display Switch to C
+		  */}
+	<div>
+		<button className="px-4 py-2 rounded-r-xl bg-sky-500 hover:bg-sky-600 text-white font-semibold"
+		onClick={() => setIsCelsius(!isCelsius)}>
+		{isCelsius ? "Switch to °F" :"Switch to °C"}</button>
+	</div>
 
 	{isLoading && <p className="text-sky-300 text-center px-2 py-2">Loading...</p>}
 
 	{ /* Conditional rendering.
 	 If the Left side is true, do it. If weatherData exists, make weather card */ }
 
-	{weatherData && <WeatherCard data = {weatherData} />}
+	{weatherData && <WeatherCard data = {weatherData} isCelsius = {isCelsius} />}
 	{ /* Conditional rendering.
 	 If the Left side is true, do it. If errorMessage exists, make error text display*/ }
 
@@ -68,15 +82,15 @@ function App() {
 		.map loops through every filtered entry and creates a forecastcard comp
 		pass in every entry to this function as a prop called forecast*/}
 	<div className="flex justify-center gap-4 flex-wrap mt-10">
+
 	{forecastData
 		.filter((entry) => entry.dt_txt.includes("12:00:00"))
 		.map((entry) => (
-			<ForecastCard key={entry.dt_txt} forecast={entry} />
+			<ForecastCard key={entry.dt_txt} forecast={entry} isCelsius = {isCelsius} />
 		))}
 	</div>
 
 	{errorMessage && <p className="font-bold text-red-500 text-center px-2 py-2">{errorMessage}</p>}
-
 	</div>
   )
 }
