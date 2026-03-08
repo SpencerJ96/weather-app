@@ -61,7 +61,7 @@ function App() {
 		  If isCelsius current state is TRUE [Celsius is displayed] Display "switch to F".
 		  Else, [isCelsius state is FALSE] display Switch to C
 		  */}
-	<div>
+	<div className="flex justify-center mb-10">
 		<button className="px-4 py-2 rounded-r-xl bg-sky-500 hover:bg-sky-600 text-white font-semibold"
 		onClick={() => setIsCelsius(!isCelsius)}>
 		{isCelsius ? "Switch to °F" :"Switch to °C"}</button>
