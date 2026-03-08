@@ -4,13 +4,19 @@
 //Attempt at interfaces - Typescript type definition only exists are compile never run
 // ForecastEntry MUST be this shape. Export to app so parent knows.
 
+// if "?" iscelsius is true display forecast.main.temp else ":" display the same temp but with this calculation
+//*DATE CONSTRUCTOR*
+// new date creates the date object passing in the forecast.dt_txt as a parameter. 
+// Then use the tolocale... METHOD and pass in "en-gb" and , weekday:long
+//  to display the date in UK Format with the long name
+
 export interface ForecastEntry{
 	dt_txt:string
 	main: { temp : number }
-	weather: {description: string } []
+	weather: {description: string, icon: string} []
 }
 
-// forecast = our imported/prop'd entry from app. EACH forecast entry must look like this shape.
+// forecast, isCelsius = our imported/prop'd entry from app. EACH one entry must look like this shape.
 
 function ForecastCard ({ forecast, isCelsius } : {forecast: ForecastEntry, isCelsius: boolean} ){
 	return (
@@ -18,6 +24,7 @@ function ForecastCard ({ forecast, isCelsius } : {forecast: ForecastEntry, isCel
 			<h2 className="px-4 py-2 text-center font-semibold text-lg tracking-wider bg-sky-500 text-white rounded-full">{new Date(forecast.dt_txt).toLocaleDateString( "en-GB", {weekday: "long"})}</h2>
 			<p className="text-4xl font-bold text-white text-center ">{ isCelsius ? `${forecast.main.temp}°C` : `${ ( forecast.main.temp * 9/5 + 32 ).toFixed(1) } °F` }</p>
 			<p className="bg-gray-700 text-gray-300 rounded-full px-4 py-2 text-center text-sm">{forecast.weather[0].description}</p>
+			< img src={`https://openweathermap.org/img/wn/${forecast.weather[0].icon}@2x.png`}/>
 		</div>
 	)
 }

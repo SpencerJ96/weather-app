@@ -71,10 +71,8 @@ function App() {
 
 	{ /* Conditional rendering.
 	 If the Left side is true, do it. If weatherData exists, make weather card */ }
-
 	{weatherData && <WeatherCard data = {weatherData} isCelsius = {isCelsius} />}
-	{ /* Conditional rendering.
-	 If the Left side is true, do it. If errorMessage exists, make error text display*/ }
+
 
 	{/* Create expression with the app states forecastData
 		Apply a filter (call every item entry while we work with it

@@ -13,9 +13,9 @@ function SearchBar({ onSearch } : { onSearch: (city:string) => void}){
 	return( 					
 		<div className="flex justify-center p-8">
 			{/* onChange watches for any typing in the input field, runs setCity
-			  with whatever is in the input box */}						
-			<input className="px-4 py-2 rounded-l-xl w-64 outline-none text-gray-800 bg-white" value={city} onChange={(e) => setCity(e.target.value)}/> 
-			{/*(setCity has updated city state*/}
+			  with whatever is in the input box */}			                                                             {/* shorthand if statement. If event key is enter, call onSearch. If not stop code   */}                                                			
+			<input className="px-4 py-2 rounded-l-xl w-64 outline-none text-gray-800 bg-white" value={city} onChange={(e) => setCity(e.target.value)} onKeyDown={ (e) => e.key ==='Enter' && onSearch(city) } /> 
+			{/*(setCity has updated thecity state*/}
 			{/* On click run our onSearch prop with the argument City (updated users value)
 						This value is then passsed to app which triggers the useEffect block */}
 			<button className="px-4 py-2 rounded-r-xl bg-sky-500 hover:bg-sky-600 text-white font-semibold" onClick={() => onSearch(city)}>Search</button>
