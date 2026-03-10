@@ -20,7 +20,7 @@ function App() {
 		async function fetchWeather(){ if (!searchedCity) return
 			
 			setIsLoading(true)
-			const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${searchedCity}&appid=${import.meta.env.VITE_WEATHER_API_KEY}&units=metric`)
+			const response = await fetch(`http://localhost:5244/api/weather?city=${searchedCity}`)
 			const data = await response.json()
 			setIsLoading(false)
 			
@@ -31,7 +31,7 @@ function App() {
 			setErrorMessage('')
 			setWeatherData(data)
 
-			const forecastResponse = await fetch (` https://api.openweathermap.org/data/2.5/forecast?q=${searchedCity}&appid=${import.meta.env.VITE_WEATHER_API_KEY}&units=metric`)
+			const forecastResponse = await fetch (`http://localhost:5244/api/weather/forecast?city=${searchedCity}`)
 			const forecastData = await forecastResponse.json()
 			setForecastData(forecastData.list)
 
